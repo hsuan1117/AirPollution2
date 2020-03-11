@@ -1,0 +1,74 @@
+<!--
+ * AIRpollution 空氣汙染 
+ * 文件: AIRpollution.html(前端)
+ * 版本: V2.0.0
+-->
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+		<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+		<script src="https://unpkg.com/vue/dist/vue.js"></script>
+		<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+		<script src="AirPollution2.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	</head>
+
+	<body>
+		<div id="app">
+			<el-container>
+				<el-select v-model="selectedArea" placeholder="Select">
+					<el-option v-for="item in air" :key="item.value" :label="item.label" :value="item.value">
+					</el-option>
+				</el-select>
+				&nbsp;
+				<br>
+				<div id="AIRpollution_Container">
+					<div v-for="(item,i) in airData" v-if="item.County == selectedArea.split(',')[1] && item.SiteName == selectedArea.split(',')[0]">
+						<el-card style="background-color: #409EFF;" class="box-card">
+							<div style="color: white;" slot="header" class="clearfix">
+								<span>氣象資料</span>
+							</div>
+							<div v-for="(item2,name) in item">
+								<span style="color: white;" v-if="typeof translation[name] != 'undefined'">
+									<p v-html="translation[name]+' : '+(item2 ? item2 : '無資料')"></p>
+								</span>
+								<span style="color: white;" v-else>
+									{{name}}(Not Translated) : {{item2 ? item2 : '無資料'}}
+								</span>
+							</div>
+						</el-card>
+					</div>
+				</div>
+				<div id="AIRpollution_Output"></div>
+			</el-container>
+			<el-button style="position: fixed;bottom: 20px;right: 20px;" type="danger" icon="el-icon-arrow-up" @click="goTop()" circle></el-button>
+		</div>
+	</body>
+
+	<script>
+		const Config = {
+			"data_url": ("AIRpollution-data_zh-TW.js?t=" + Date.now()),
+			"language_url": "language/localString-zh-TW.json"
+		}
+		var Air = new AirPollution(Config)
+		var AirApp = new Vue({
+			el: "#app",
+			data: {
+				air: [],
+				airData: [],
+				translation: {},
+				selectedArea: ""
+			},
+			created: function() {
+				Air.load()
+			},
+			methods:{
+				goTop:function(){
+					location.href = "#"
+				}
+			}
+		})
+	</script>
+</html>
