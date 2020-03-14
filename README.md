@@ -1,10 +1,8 @@
 # AIRpollution2
+
 ## 說明
-一個可以在網站中加入空氣汙染的外掛
-
-藉由Google App Script當免費後端
-
-可以即時更新從中央氣象局取得的空汙資料
+Google App Script + Vue.js + ElementUI
+取得即時的天氣資訊（每小時更新）
 
 ## ChangeLog
 
